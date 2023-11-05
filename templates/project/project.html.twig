@@ -1,0 +1,223 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="mt-2">
+        <div class="d-flex justify-content-between">
+            <h1 class="mb-2 text-uppercase ">{{ project.name }}</h1>
+            <div class="btn-group" role="group">
+                {% if project.active %}
+                <a href="{{ url('tasks_add', {project: project.id}) }}" class="btn btn-outline-success btn-sm">📝
+                    {{ 'New Task/Ticket' | trans }}
+                </a>
+                {% endif %}
+                <a href="{{ url('projects_edit', {project: project.id}) }}" class="btn btn-outline-primary btn-sm">✏️
+                    {{ 'Edit Configuration' | trans }}
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h5>📊 {{ 'Project Information' | trans }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            📄 {{ project.description|nl2br }}
+                        </p>
+                        <p class="card-text">{{ 'Created by'|trans }} : 🧑‍💻 <strong>{{ project.createdBy.username }}</strong> - {{ project.createdAt|date('d/m/Y H:i') }}</p>
+                        <p class="card-text">{{ 'Last Updated'|trans }} : {{ project.updatedAt|date('d/m/Y H:i') }}</p>
+                    </div>
+                </div>
+                {% if not project.files.empty %}
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            📂 {{ 'Files'|trans }}
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                {% for projectFile in project.files %}
+                                    <div>📄 <a href="{{ url('projects_file', {projectFile : projectFile.id}) }}"
+                                              class="">{{ projectFile.file.name }}</a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🧑‍🤝‍🧑 {{ 'Members' | trans }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for projectUser in project.projectUsers %}
+                                <li class="list-group-item">🧑‍💻 <strong>{{ projectUser.user.username }}</strong>
+                                    ({{ projectUser.permissions|map(p => p|trans )|join(', ') }})
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h5>📌 {{ 'Tasks' | trans }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive max-h-75">
+                            <table class="table table-hover" id="tasks">
+                                <thead>
+                                <tr>
+                                    <th scope="col">{{ "ID"|trans }}</th>
+                                    <th scope="col">{{ "Category"|trans }}</th>
+                                    <th scope="col">{{ "Title"|trans }}</th>
+                                    <th scope="col">{{ "Priority"|trans }}</th>
+                                    <th scope="col">{{ "Status"|trans }}</th>
+                                    <th scope="col">{{ "Assign to"|trans }}</th>
+                                    <th scope="col">% {{ "Completed"|trans }}</th>
+                                    <th scope="col">{{ "estimatedTime"|trans }}</th>
+                                    <th scope="col">{{ "actualTime"|trans }}</th>
+                                    <th scope="col" data-sortable="false"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for task in tasks %}
+                                    <tr>
+                                        <td>{{ task.id }}</td>
+                                        <td>{{ task.taskCategoryReference.label|default('') }}</td>
+                                        <td><a href="{{ url('tasks_get', {task : task.id}) }}">{{ task.title }}</a></td>
+                                        <td>{{ task.priority|trans }}</td>
+                                        <td>{{ task.lastStatus.label|default('')|trans }}</td>
+                                        <td>{{ task.assignedTo.username|default('') }}</td>
+                                        <td>
+                                            <progress max="100" value="{{ task.percentageCompleted }}">{{ task.percentageCompleted }}%
+                                            </progress>
+                                        </td>
+                                        <td>{{ task.estimatedTime|default('0.00') }}</td>
+                                        <td>{{ task.actualTime|default('0.00') }}</td>
+                                        <td>
+                                            {% if project.active %}
+                                            <div class="dropdown">
+                                                <button class="btn btn-light btn-sm dropdown-toggle" type="button"
+                                                        id="action_task" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    ☰
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="action_task">
+                                                    <li>
+                                                        <label class="dropdown-item-text" for="task_status">🔵 {{ 'Status' | trans }}</label>
+                                                    </li>
+                                                    <li>
+                                                        <form class="dropdown-item-text" method="post"
+                                                              action="{{ url('tasks_change_status', {task: task.id, redirect_url : app.request.uri}) }}">
+                                                            <select id="task_status"
+                                                                    name="project_category_reference_id"
+                                                                    class="form-select form-select-sm">
+                                                                {% for status in statuses %}
+                                                                    <option value="{{ status.id }}"{% if status.taskStatusReference.label == task.lastStatus.label %} selected="selected"{% endif %}>
+                                                                        {{ status.taskStatusReference.label }}
+                                                                    </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <div class="text-center mt-1">
+                                                                <button type="submit" class="btn btn-sm btn-light">✅
+                                                                    OK
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <label class="dropdown-item-text" for="task_percentageCompleted">📈 {{ 'Completed' | trans }} (%)</label>
+                                                    </li>
+                                                    <li>
+                                                        <form class="dropdown-item-text" method="post"
+                                                              action="{{ url('tasks_change_completed', {task: task.id, redirect_url : app.request.uri}) }}">
+                                                            <select id="task_percentageCompleted"
+                                                                    name="percentageCompleted"
+                                                                    class="form-select form-select-sm">
+                                                                <option value="0"{% if task.percentageCompleted  == 0 %} selected="selected"{% endif %}>
+                                                                    0 %
+                                                                </option>
+                                                                <option value="25"{% if task.percentageCompleted  == 25 %} selected="selected"{% endif %}>
+                                                                    25 %
+                                                                </option>
+                                                                <option value="50"{% if task.percentageCompleted  == 50 %} selected="selected"{% endif %}>
+                                                                    50 %
+                                                                </option>
+                                                                <option value="75"{% if task.percentageCompleted  == 75 %} selected="selected"{% endif %}>
+                                                                    75 %
+                                                                </option>
+                                                                <option value="100"{% if task.percentageCompleted  == 100 %} selected="selected"{% endif %}>
+                                                                    100 %
+                                                                </option>
+                                                            </select>
+                                                            <div class="text-center mt-1">
+                                                                <button type="submit" class="btn btn-sm btn-light">✅
+                                                                    OK
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item small"
+                                                           href="{{ url('tasks_edit', {task : task.id, redirect_url : app.request.uri}) }}">✏️
+                                                            {{ 'Edit' | trans }}
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item small" href="#">🗑️ {{ 'Delete' | trans }}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        window.addEventListener("DOMContentLoaded", (event) => {
+            const dataTable = new DataTable("#tasks", {
+                searchable: true,
+                perPage: 10,
+                columns: [
+                    {
+                        select: 0,
+                        sort: 'desc'
+                    }
+                ],
+                labels: {
+                    placeholder: "{{ 'Search...' | trans }}",
+                    perPage: "{{ 'items per page' | trans }}",
+                    noRows: "{{ 'No data' | trans }}",
+                    info: "{{ 'Displaying {start} to {end} of {rows} items' | trans }}"
+                },
+                rowRender: (row, tr, _index) => {
+                    if (!tr.attributes.class) {
+                        tr.attributes.class = '';
+                    }
+                    if (row[3].text === "{{ 'HIGH'|trans }}") {
+                        tr.attributes.class += ' table-danger'
+                    } else if (row[3].text === "{{ 'MEDIUM'|trans }}") {
+                        tr.attributes.class += ' table-warning'
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock %}

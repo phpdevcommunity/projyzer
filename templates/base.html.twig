@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Projyzer {% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app_css') }}
+        {% endblock %}
+        {{ encore_entry_script_tags('app_js') }}
+    </head>
+    <body>
+        {% block body %}
+            <header class="header">
+                <nav class="navbar">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <a class="navbar-brand pt-0" href="#">
+                            <img src="{{ asset('images/logo_light.png') }}" alt="Bootstrap" width="100" class="logo">
+                        </a>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div>
+                                <a class="text-white mx-1 btn btn-sm" href="#">{{ 'connected_as'|trans }} <b>{{ app.user.username }}</b></a>
+                                <a class="btn btn-link btn-sm text-white" href="{{ url('app_password_change') }}">{{ 'password.button_change'|trans }}</a>
+                                <a class="btn btn-link btn-sm text-white" href="{{ url('app_logout') }}">{{ 'buttons.logout'|trans }}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </nav>
+            </header>
+            {% set route = app.current_route %}
+            <ul class="main-navigation nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link{% if route == 'app_homepage' %} active{% endif %}" aria-current="page" href="{{ url('app_homepage') }}">📊 {{ "Dashboard"|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if route starts with 'projects_' %} active{% endif %}" href="{{ url('projects_index') }}">📂 {{ "Projects"|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if route starts with 'tasks_' %} active{% endif %}" href="{{ url('tasks_index') }}">📋 {{ "Tasks"|trans }}</a>
+                </li>
+                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('admin') }}" tabindex="-1" aria-disabled="true">⚙️ {{ "Administration"|trans }}</a>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="__layout">
+                <main class="__main">
+                    <div class="container-fluid">
+                    {% block content %}
+                    {% endblock %}
+                    </div>
+                </main>
+            </div>
+
+        {% endblock %}
+        {% include 'flash_bag.html.twig' %}
+        {% block javascripts %}
+        {% endblock %}
+    </body>
+</html>

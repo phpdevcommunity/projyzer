@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="mt-2">
+        <div class="d-flex justify-content-between">
+            <h1>{{ "Projects"|trans }}</h1>
+            <div class="btn-group" role="group">
+                <a href="{{ url('projects_add', {organizationUnit : app.user.organizationUnit.id}) }}" class="btn btn-outline-primary btn-sm">📝
+                    {{ "New Project"|trans }}</a>
+            </div>
+        </div>
+        <hr>
+        <table class="table table-striped table-hover" id="projects">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'ID'|trans }}</th>
+                <th scope="col">{{ 'Organization'|trans }}</th>
+                <th scope="col">{{ 'Category'|trans }}</th>
+                <th scope="col">{{ 'Project Name'|trans }}</th>
+                <th scope="col">{{ 'Description'|trans }}</th>
+                <th scope="col">{{ 'Status'|trans }}</th>
+                <th scope="col" data-sortable="false"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+            <tr>
+                <th scope="row">{{ project.id }}</th>
+                <th scope="row">{{ project.organizationUnit.name }}</th>
+                <th scope="row">{{ project.projectCategoryReference.label|default('') }}</th>
+                <td><a href="{{ url('projects_get', {slug : project.slug}) }}">{{ project.name }}</a></td>
+                <td>{{ project.description|slice(0, 50) }}...</td>
+                <td>
+                    {% if project.active is same as(true) %}
+                        <span class="badge bg-success">{{ 'Active'|trans }}</span>
+                    {% else %}
+                        <span class="badge bg-danger">{{ 'Inactive'|trans }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                            ☰
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            {% if project.active is same as(true) %}
+                                <li><a class="dropdown-item" href="{{ url('projects_close', {project: project.id}) }}">🔒 {{ 'Close'|trans }}</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{{ url('projects_open', {project: project.id}) }}">🔓 {{ 'Open'|trans }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        window.addEventListener("DOMContentLoaded", (event) => {
+            const dataTable = new DataTable("#projects", {
+                searchable: true,
+                perPage: 15,
+                columns: [
+                    {
+                        select: 0,
+                        sort: 'desc'
+                    }
+                ],
+                labels: {
+                    placeholder: "{{ 'Search...' | trans }}",
+                    perPage: "{{ 'items per page' | trans }}",
+                    noRows: "{{ 'No data' | trans }}",
+                    info: "{{ 'Displaying {start} to {end} of {rows} items' | trans }}"
+                }
+            })
+        });
+    </script>
+{% endblock %}

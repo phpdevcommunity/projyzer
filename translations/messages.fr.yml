@@ -1,0 +1,153 @@
+add_a_comment: Ajouter un commentaire
+comment_added_successfully: Commentaire ajouté avec succès
+project_closed_error: Désolé, le projet est actuellement fermé, vous ne pouvez pas ajouter de nouvelles tâches ou tickets.
+category_initialization_error: "Vous devez définir un statut d'initialisation par défaut pour la catégorie : %s"
+task_saved_successfully: La tâche a été enregistrée avec succès !
+invalid_number_value: La valeur doit être un nombre valide
+update_successful: Mise à jour effectuée avec succès
+invalid_identifier: L'identifiant n'est pas valide
+status_not_exist_for_project_category: Le statut n'existe pas pour cette catégorie de projet
+project_saved_successfully: Le projet a été enregistré avec succès !
+project_closed_successfully: Le projet a été fermé avec succès !
+project_reopened_successfully: Le projet a été ré-ouvert avec succès !
+not_exist_project_category_reference: "Aucune catégorie n'est configurée. Veuillez ajouter une première catégorie ou demander à un administrateur de le faire."
+Please sign in: Veuillez vous connecter
+Username: Nom d'utilisateur
+Password: Mot de passe
+Sign in: Se connecter
+Members: Membres
+Add a member: Ajouter un membre
+New Task/Ticket: Nouvelle tâche/ticket
+Edit Configuration: Modifier la configuration
+Project Information: Informations sur le projet
+Created by: Créé par
+Last Updated: Dernière mise à jour
+Files: Fichiers
+Tasks: Tâches
+ID: ID
+Category: Catégorie
+Title: Titre
+Priority: Priorité
+Status: Statut
+Assign to: Assigner à
+estimatedTime: Temps estimé
+actualTime: Temps passé
+Edit: Modifier
+Delete: Supprimer
+Search...: Rechercher...
+items per page: éléments par page
+No data: Aucune donnée
+Displaying {start} to {end} of {rows} items: Affichage de {start} à {end} sur {rows} éléments
+New Project: Nouveau projet
+Organization: Organisation
+Project Name: Nom du projet
+Description: Description
+Active: Actif
+Inactive: Inactif
+Close: Fermer
+Open: Ouvrir
+Task Information: Informations de la tâche
+Task Management: Gestion de la tâche
+Time and Progress: Temps et Progrès
+Observers: Observateurs
+Add an observer: Ajouter un observateur
+Save: Enregistrer
+Project: Projet
+Task: Tâche
+Added by: Ajouté par
+Assigned To: Assigné à
+Completed: Complété
+Estimated Time: Temps estimé
+Actual Time: Temps passé
+Comments: Commentaires
+Recent Projects: Projets Récents
+Statistics: Statistiques
+Active Projects: Projets Actifs
+Ongoing Tasks: Tâches en Cours
+Active Users: Utilisateurs Actifs
+Dashboard: Tableau de bord
+Projects: Projets
+Administration: Administration
+name: Nom
+description: Description
+User: Utilisateur
+Permissions: Autorisations
+FULL_PRIVILEGE: Privilège complet
+CAN_CREATE_TASK: Peut créer une tâche
+CAN_EDIT_PROJECT: Peut modifier le projet
+CAN_CLOSE_PROJECT: Peut fermer le projet
+CAN_DELETE_PROJECT: Peut supprimer le projet
+HIGH: Élevé
+LOW: Faible
+MEDIUM: Moyen
+title: Titre
+Assigned to: Assigné à
+Estimated time: Temps estimé
+Actual time: Temps passé
+Percentage completed: Pourcentage réalisé
+CAN_EDIT_TASK: Peut modifier la tâche
+CAN_COMMENT: Peut commenter
+Back to Application: Retourner à l'application
+Organizations: Organisations
+Manage Organizations: Gérer les organisations
+Manage Organization Units: Gérer les unités d'organisation
+Projects and Tasks: Projets et tâches
+Project Categories: Catégories de projets
+Task Categories: Catégories de tâches
+Task Statuses: Statuts de tâches
+Tasks in Categories: Tâches dans les catégories
+Users: Utilisateurs
+Manage Users: Gérer les utilisateurs
+Name: Nom
+Identifier: Identifiant
+Created At: Date de création
+Updated At: Date de mise à jour
+OrganizationUnit: Établissement
+Code: Code
+ProjectCategoryReference: Catégorie de projet
+Organization Unit: Établissement
+Label: Libellé
+TaskCategoryReference: Référence de catégorie de tâche
+TaskStatusReference: Référence de statut de tâche
+ProjectCategoryReferenceStatus: Statut de catégorie de projet
+Project Category Reference: Référence de catégorie de projet
+Task Status Reference: Référence de statut de tâche
+Order: Ordre
+Is Initial: Est initial
+Closes Task: Ferme la tâche
+Email: Email
+Roles: Rôles
+ROLE_USER: Utilisateur
+ROLE_ADMIN: Administrateur
+ROLE_SUPER_ADMIN: Super Administrateur
+connected_as: 'Connecté en tant que'
+Create an Account: "Activation de votre Compte"
+Change my password: "Modifier mon mot de passe"
+password.old: Ancien mot de passe
+password.button_save: Modifier mon mot de passe
+password.button_change: Changer de mot de passe
+change_password.old_password_invalid: "Votre ancien mot de passe n'est pas valide."
+change_password.success: "Votre mot de passe a été changé avec succès."
+change_password.error: "Désolé, une erreur est survenue."
+username: Identifiant
+flash_messages:
+  account_active: "Votre compte est déjà activé"
+  account_activated: "Votre compte est activé. Vous pouvez maintenant vous connecter"
+buttons:
+  my_account: "Mon compte"
+  logout: "Déconnexion"
+register:
+  placeholder_email: vous@gmail.com
+  password_mismatch: Les mots de passe doivent être identiques.
+  password_help: "Le mot de passe doit contenir au moins 8 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial"
+  password_new: Mot de passe
+  password_confirm: Confirmez votre mot de passe
+  button_save: Activer mon compte
+email:
+  subject_activation_account: 'Activation de votre compte'
+  activation:
+    title: "Activation de Compte"
+    intro: "Bonjour %user%,"
+    link: 'Cliquez ici pour activer votre compte'
+    alt_link: "Si le lien ne fonctionne pas, vous pouvez copier-coller l'URL suivante dans la barre d'adresse de votre navigateur"
+    signature: 'Meilleures salutations, %organizationName%'

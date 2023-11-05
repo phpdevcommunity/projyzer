@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="mt-2">
+        <h1 class="mb-2 text-uppercase ">{{ task.project.name }}</h1>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <span>📌 {{ 'Task'|trans }} # {{ task.id }}</span>
+                    <div class="btn-group" role="group">
+                        {% if project.active and task.canEdit(app.user)  %}
+                        <a href="{{ url('tasks_edit', {task: task.id}) }}" class="btn btn-outline-primary btn-sm">✏️
+                            {{ 'Edit'|trans }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="background: rgba(11, 87, 208, 0.16);">
+                <h4 class="card-title">{{ task.title }}</h4>
+                <p class="">{{ 'Added by'|trans }} <strong>{{  task.createdBy.username }}</strong> - {{ task.createdAt|date('d/m/Y H:i') }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>🔵 {{ 'Status'|trans }}:</strong> {{ task.lastStatus.label|default('-')|trans }} - <small>({{ task.lastStatus.createdAt|date('d/m/Y H:i') }} {{ task.lastStatus.user.username|default('') }})</small>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>🚀 {{ 'Priority'|trans }}:</strong> {{ task.priority|trans }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>🧑‍💻 {{ 'Assigned To'|trans }}:</strong> {{ task.assignedTo.username|default('-')|trans }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>📈 % {{ 'Completed'|trans }}:</strong> <progress max="100" value="{{ task.percentageCompleted }}">{{ task.percentageCompleted }}%</progress>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>⏱️ {{ 'Estimated Time'|trans }}:</strong> {{ task.estimatedTime|default('-') }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>⌛ {{ 'Actual Time'|trans }}:</strong> {{ task.actualTime|default('-') }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-2">
+            <div class="card-header">
+                📝 {{ 'Description'|trans }}
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    {{ task.description|nl2br }}
+                </div>
+            </div>
+        </div>
+        {% if not task.files.empty %}
+            <div class="card mt-2">
+                <div class="card-header">
+                    📂 {{ 'Files'|trans }}
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column">
+                        {% for taskFile in task.files %}
+                            <div>📄 <a target="_blank" href="{{ url('tasks_file', {taskFile : taskFile.id}) }}" class="">{{ taskFile.file.name }}</a></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="card mt-2">
+            <div class="card-header">
+                💬 {{ 'Comments'|trans }}
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for comment in task.comments %}
+                    <li class="list-group-item">
+                        <strong>{{ comment.user.username|default('User') }}</strong> <span>{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                        <p>{{ comment.content }}</p>
+                        <div class="d-flex flex-column">
+                            {% for taskCommentFile in comment.files %}
+                                <div>📄 <a href="{{ url('tasks_comment_file', {taskCommentFile : taskCommentFile.id}) }}" class="">{{ taskCommentFile.file.name }}</a></div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
+                <li class="list-group-item bg-primary-subtle">
+                    <div{% if project.active is same as(false) or task.canComment(app.user) is same as(false) %} disabled{% endif %}>
+                        {{ form_start(form) }}
+                        <div>
+                            {{ form_widget(form.comment) }}
+                            {{ form_errors(form.comment) }}
+                        </div>
+                        <div>
+                            {{ form_widget(form.files) }}
+                            {{ form_errors(form.files) }}
+                        </div>
+                        <div class="mt-2">
+                            {{ form_widget(form.submit) }}
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

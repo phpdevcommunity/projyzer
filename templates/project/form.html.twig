@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="mt-2">
+        <div class="card mt-2">
+            <div class="card-header">
+                <h5>📝 {{ project.name|default('New Project')|trans }}</h5>
+            </div>
+            <div class="card-body container">
+                {{ form_start(form) }}
+                {{ form_row(form.projectCategoryReference) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.files) }}
+                <div class="small">
+                    <h5>{{ 'Members' | trans }}</h5>
+                    <ul id="project_users" class="members list-group"
+                        data-index="{{ form.projectUsersWithoutOwner|length > 0 ? form.projectUsersWithoutOwner|last.vars.name + 1 : 0 }}"
+                        data-prototype="{{ form_widget(form.projectUsersWithoutOwner.vars.prototype)|e('html_attr') }}"
+                    >
+                        {% for projectUser in form.projectUsersWithoutOwner %}
+                            <li class="list-group-item item-from-collection">
+                                {{ form_row(projectUser.user) }}
+                                {{ form_row(projectUser.permissions) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="add_item_link btn btn-outline-success btn-sm mt-1" data-collection-holder-class="members">{{ 'Add a member' | trans }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        function initSelect(item) {
+            item.querySelectorAll('.form-select').forEach((select) => {
+                new TomSelect(select, {plugins: ['remove_button'],});
+            })
+        }
+
+        const addFormToCollection = (e) => {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+            item.classList.add('list-group-item', 'item-from-collection')
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+            addTagFormDeleteLink(item);
+            initSelect(item);
+        };
+
+        const addTagFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.innerText = '🗑️';
+            removeFormButton.classList.add('btn', 'btn-danger', 'btn-sm', 'item-delete-btn')
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            document
+                .querySelectorAll('.add_item_link')
+                .forEach(btn => {
+                    btn.addEventListener("click", addFormToCollection)
+                });
+
+            if (document.querySelector('#project_projectCategoryReference')) {
+                const select = new TomSelect('#project_projectCategoryReference', {plugins: ['remove_button'],});
+            }
+            document.querySelectorAll('#project_users li').forEach((item) => {
+                addTagFormDeleteLink(item)
+                initSelect(item);
+            })
+        });
+    </script>
+{% endblock %}

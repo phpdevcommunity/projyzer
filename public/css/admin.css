@@ -1,0 +1,28 @@
+:root {
+    /* make the backend contents as wide as the browser window */
+    --body-max-width: 100%;
+    /* change the background color of the <body> */
+    --body-bg: #EEEEEE;
+    /* make the base font size smaller */
+    --font-size-base: 13px;
+    /* remove all border radius to make corners straight */
+    --border-radius:0.1em;
+    --color-primary: #004d7b;
+    --link-color: #004d7b;
+    --link-hover-color: #003b5b;
+    --button-primary-bg : #004d7b;
+    --form-switch-checked-bg : #004d7b;
+    --form-type-check-input-checked-bg : #004d7b;
+    --pagination-active-bg : #004d7b;
+    --content-search-input-bg: #FFF;
+}
+.ea-dark-scheme {
+    --sidebar-menu-active-item-color: #EEEEEE;
+    --user-name-color: #EEEEEE;
+    --button-primary-bg : #004d7b;
+    --pagination-active-bg : #004d7b;
+    --body-bg: #121212;
+    --text-color: #EEEEEE;
+    --pagination-color: #EEEEEE;
+    --pagination-disabled-color: #a1a1a1;
+}

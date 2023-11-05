@@ -1,0 +1,154 @@
+add_a_comment: Add a comment
+comment_added_successfully: Comment added successfully
+project_closed_error: Sorry, the project is currently closed, you cannot add new tasks or tickets.
+category_initialization_error: "You must set a default initialization status for the category: %s"
+task_saved_successfully: The task has been saved successfully!
+invalid_number_value: The value must be a valid number
+update_successful: Update successful
+invalid_identifier: The identifier is not valid
+status_not_exist_for_project_category: The status does not exist for this project category
+project_saved_successfully: The project has been saved successfully!
+project_closed_successfully: The project has been closed successfully!
+project_reopened_successfully: The project has been reopened successfully!
+not_exist_project_category_reference: "No category is configured. Please add the first category or ask an administrator to do so."
+Please sign in: Please sign in
+Username: Username
+Password: Password
+Sign in: Sign in
+Members: Members
+Add a member: Add a member
+New Task/Ticket: New Task/Ticket
+Edit Configuration: Edit Configuration
+Project Information: Project Information
+Created by: Created by
+Last Updated: Last Updated
+Files: Files
+Tasks: Tasks
+ID: ID
+Category: Category
+Title: Title
+Priority: Priority
+Status: Status
+Assign to: Assign to
+estimatedTime: Estimated Time
+actualTime: Actual Time
+Edit: Edit
+Delete: Delete
+Search...: Search...
+items per page: items per page
+No data: No data
+Displaying {start} to {end} of {rows} items: Displaying {start} to {end} of {rows} items
+New Project: New Project
+Organization: Organization
+Project Name: Project Name
+Description: Description
+Active: Active
+Inactive: Inactive
+Close: Close
+Open: Open
+Task Information: Task Information
+Task Management: Task Management
+Time and Progress: Time and Progress
+Observers: Observers
+Add a observer: Add an observer
+Save: Save
+Project: Project
+Task: Task
+Added by: Added by
+Assigned To: Assigned To
+Completed: Completed
+Estimated Time: Estimated Time
+Actual Time: Actual Time
+Comments: Comments
+Recent Projects: Recent Projects
+Statistics: Statistics
+Active Projects: Active Projects
+Ongoing Tasks: Ongoing Tasks
+Active Users: Active Users
+Dashboard: Dashboard
+Projects: Projects
+Administration: Administration
+name: Name
+description: Description
+User: User
+Permissions: Permissions
+FULL_PRIVILEGE: Full Privilege
+CAN_CREATE_TASK: Can create a task
+CAN_EDIT_PROJECT: Can edit the project
+CAN_CLOSE_PROJECT: Can close the project
+CAN_DELETE_PROJECT: Can delete the project
+HIGH: High
+LOW: Low
+MEDIUM: Medium
+title: Title
+Assigned to: Assigned to
+Estimated time: Estimated time
+Actual time: Actual time
+Percentage completed: Percentage completed
+CAN_EDIT_TASK: Can edit the task
+CAN_COMMENT: Can comment
+Back to Application: Back to Application
+Organizations: Organizations
+Manage Organizations: Manage Organizations
+Manage Organization Units: Manage Organization Units
+Projects and Tasks: Projects and Tasks
+Project Categories: Project Categories
+Task Categories: Task Categories
+Task Statuses: Task Statuses
+Tasks in Categories: Tasks in Categories
+Users: Users
+Manage Users: Manage Users
+Name: Name
+Identifier: Identifier
+Created At: Created At
+Updated At: Updated At
+OrganizationUnit: Organization Unit
+Code: Code
+ProjectCategoryReference: Project Category
+Organization Unit: Organization Unit
+Label: Label
+TaskCategoryReference: Task Category Reference
+TaskStatusReference: Task Status Reference
+ProjectCategoryReferenceStatus: Project Category Status
+Project Category Reference: Project Category Reference
+Task Status Reference: Task Status Reference
+Order: Order
+Is Initial: Is Initial
+Closes Task: Closes Task
+Email: Email
+Roles: Roles
+ROLE_USER: User
+ROLE_ADMIN: Administrator
+ROLE_SUPER_ADMIN: Super Administrator
+connected_as: 'Connected as'
+Create an Account: Create an Account
+Change my password: "Change my password"
+username: Username
+password.old: "Old password"
+password.button_save: "Change my password"
+password.button_change: "Change password"
+change_password.old_password_invalid: "Your old password is not valid."
+change_password.success: "Your password has been changed successfully."
+change_password.error: "Sorry, an error occurred."
+flash_messages:
+  account_active: "Your account is already activated"
+  account_activated: "Your account is activated. You can now log in"
+buttons:
+  my_account: "My account"
+  logout: "Logout"
+register:
+  placeholder_email: your@gmail.com
+  password_mismatch: Passwords must match.
+  password_help: "The password must contain at least 8 characters, including a digit, an uppercase letter, a lowercase letter, and a special character."
+  password_new: New password
+  password_confirm: Confirm your password
+  button_save: Activate my account
+
+email:
+  subject_activation_account: 'Activation of your account'
+  activation:
+    title: 'Account Activation'
+    intro: 'Hello %user%,'
+    link: 'Click on the following link to activate your account:'
+    alt_link: "If the link doesn't work, you can copy and paste the following URL into your browser address bar"
+    signature: 'Best regards, %organizationName%'

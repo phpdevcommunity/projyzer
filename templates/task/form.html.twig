@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="mt-2">
+        <div class="text-center">
+            <h1 class="mb-2 text-uppercase">{{ task.project.name }}</h1>
+        </div>
+        <hr>
+        <div class="card mt-2">
+            <div class="card-header">
+                <h5>📌 {{ task.title|default('New Task/Ticket')|trans }}</h5>
+            </div>
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-12">
+                        <fieldset>
+                            <legend>{{ 'Task Information' | trans }}</legend>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ form_row(form.taskCategoryReference) }}
+                                    {{ form_row(form.title) }}
+                                    <details{% if task.id == null %} open{% endif %} class="mb-2">
+                                        <summary>✏️ {{ 'Description'|trans }}</summary>
+                                    {{ form_widget(form.description) }}
+                                    {{ form_errors(form.description) }}
+                                    </details>
+                                    {{ form_row(form.files) }}
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>{{ 'Task Management' | trans }}</legend>
+                            {{ form_row(form.taskStatusReference) }}
+                            {{ form_row(form.priority) }}
+                            {{ form_row(form.assignedTo) }}
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>{{ 'Time and Progress' | trans }}</legend>
+                            {{ form_row(form.estimatedTime) }}
+                            {{ form_row(form.actualTime) }}
+                            {{ form_row(form.percentageCompleted) }}
+                        </fieldset>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <details{% if task.id == null %} open{% endif %}>
+                            <summary>👥 {{ 'Observers'|trans }}</summary>
+                            <div class="small">
+                                <ul id="task_users" class="members list-group"
+                                    data-index="{{ form.taskUsers|length > 0 ? form.taskUsers|last.vars.name + 1 : 0 }}"
+                                    data-prototype="{{ form_widget(form.taskUsers.vars.prototype)|e('html_attr') }}"
+                                >
+                                    {% for taskUser in form.taskUsers %}
+                                        <li class="list-group-item item-from-collection">
+                                            {{ form_row(taskUser.user) }}
+                                            {{ form_row(taskUser.permissions) }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <button type="button" class="add_item_link btn btn-outline-success btn-sm mt-1" data-collection-holder-class="members">
+                                    {{ 'Add an observer'|trans }}</button>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">{{ 'Save'|trans }}</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        function initSelect(item) {
+            item.querySelectorAll('.form-select').forEach((select) => {
+                new TomSelect(select, {plugins: ['remove_button'],});
+            })
+        }
+
+        const addFormToCollection = (e) => {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+            item.classList.add('list-group-item', 'item-from-collection')
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+            addTagFormDeleteLink(item);
+            initSelect(item);
+        };
+
+        const addTagFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.innerText = '🗑️';
+            removeFormButton.classList.add('btn', 'btn-danger', 'btn-sm', 'item-delete-btn')
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            document
+                .querySelectorAll('.add_item_link')
+                .forEach(btn => {
+                    btn.addEventListener("click", addFormToCollection)
+                });
+            document.querySelectorAll('#task_users li').forEach((item) => {
+                addTagFormDeleteLink(item)
+                initSelect(item);
+            })
+        });
+    </script>
+{% endblock %}

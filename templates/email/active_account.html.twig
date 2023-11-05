@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="{{ app.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'email.activation.title'|trans }}</title>
+</head>
+<body>
+<h1>{{ 'email.activation.title'|trans }}</h1>
+<p>{{ 'email.activation.intro'|trans({'%user%':user.firstname}) }}</p>
+<p><a href="{{ activationLink }}">{{ 'email.activation.link'|trans }}</a></p>
+<p>{{ 'email.activation.alt_link'|trans }}: {{ activationLink }}</p>
+<p>{{ 'email.activation.signature'|trans({'%organizationName%':user.organizationUnit.name}) }}</p>
+</body>
+</html>

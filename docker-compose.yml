@@ -1,0 +1,11 @@
+version: "3"
+services:
+  projyzer:
+    restart: always
+    build: './.docker/app'
+    container_name: projyzer
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "${DOCKER_PORT_NGINX:-8045}:80"
