@@ -60,24 +60,24 @@ final class UserService
         $this->userRepository->save($user, true);
     }
 
-    public function passwordForgot(User $user):void
-    {
-        if ($user->getId() === null) {
-            throw new \InvalidArgumentException('id user can not be null');
-        }
-        $user->generateHash();
-        $this->userRepository->save($user, true);
-
-        $this->mailerService->send(
-            (new Email())
-                ->to(new Address($user->getEmail()))
-                ->subject("[NOREPLY] Demande de ré-initialisation de mot de passe")
-                ->html($this->twig->render('email/password_forgot.html.twig', [
-                    'urlResetPassword' => $this->urlGenerator->generate('app_password_reset', ['hash' => $user->getHash()], UrlGeneratorInterface::ABSOLUTE_URL),
-                    'user' => $user
-                ]))
-        );
-    }
+//    public function passwordForgot(User $user):void
+//    {
+//        if ($user->getId() === null) {
+//            throw new \InvalidArgumentException('id user can not be null');
+//        }
+//        $user->generateHash();
+//        $this->userRepository->save($user, true);
+//
+//        $this->mailerService->send(
+//            (new Email())
+//                ->to(new Address($user->getEmail()))
+//                ->subject("[NOREPLY] Demande de ré-initialisation de mot de passe")
+//                ->html($this->twig->render('email/password_forgot.html.twig', [
+//                    'urlResetPassword' => $this->urlGenerator->generate('app_password_reset', ['hash' => $user->getHash()], UrlGeneratorInterface::ABSOLUTE_URL),
+//                    'user' => $user
+//                ]))
+//        );
+//    }
 
     public function passwordChange(User $user, string $newPlainPassword): void
     {

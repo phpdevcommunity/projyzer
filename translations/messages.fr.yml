@@ -151,3 +151,17 @@ email:
     link: 'Cliquez ici pour activer votre compte'
     alt_link: "Si le lien ne fonctionne pas, vous pouvez copier-coller l'URL suivante dans la barre d'adresse de votre navigateur"
     signature: 'Meilleures salutations, %organizationName%'
+task_update_subject: "[%project%] Demande : %task%"
+task_update:
+  title: "Demande %taskNumber%"
+  intro: "Bonjour %user%,"
+  content: "Une tâche/demande dans le projet [%project%] a été mise à jour. Voici les détails :"
+  details:
+    - "Titre de la tâche : %task%"
+    - "Auteur : %createdBy%"
+    - "Statut : %status%"
+    - "Priorité : %priority%"
+    - "Assigné à : %assignedTo%"
+    - "Mis à jour par : %updatedBy%"
+  cta: "Vous pouvez consulter la tâche en cliquant sur le lien suivant :"
+  signature: "Cordialement, %organizationName%"

@@ -122,11 +122,28 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
+            var easyMDE  = new EasyMDE({
+                element: document.getElementById("task_description"),
+                minHeight: "200px",
+                status: false,
+                toolbar: ["undo", "bold", "italic", "heading", "unordered-list", "ordered-list", "|","code", "|", "preview"],
+                timeFormat: {
+                    format: {
+                        year: 'numeric',
+                        month: 'long',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    },
+                },
+            });
+
             document
                 .querySelectorAll('.add_item_link')
                 .forEach(btn => {
                     btn.addEventListener("click", addFormToCollection)
                 });
+
             document.querySelectorAll('#task_users li').forEach((item) => {
                 addTagFormDeleteLink(item)
                 initSelect(item);

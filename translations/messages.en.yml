@@ -152,3 +152,14 @@ email:
     link: 'Click on the following link to activate your account:'
     alt_link: "If the link doesn't work, you can copy and paste the following URL into your browser address bar"
     signature: 'Best regards, %organizationName%'
+task_update_subject: "[%project%] Request : %task%"
+task_update:
+  title: "Request %taskNumber%"
+  intro: "Hello %user%,"
+  content: "A task in project [%project%] has been updated. Here are the details:"
+  details:
+    0: "Task Title: %task%"
+    1: "Updated by: %updatedBy%"
+    2: "Date: %updatedAt%"
+  cta: "You can view the task by clicking on the following link:"
+  signature: "Best regards, %organizationName%"
