@@ -28,7 +28,7 @@
                 <th scope="row">{{ project.organizationUnit.name }}</th>
                 <th scope="row">{{ project.projectCategoryReference.label|default('') }}</th>
                 <td><a href="{{ url('projects_get', {slug : project.slug}) }}">{{ project.name }}</a></td>
-                <td>{{ project.description|slice(0, 50) }}...</td>
+                <td>{{ project.description|md2html|striptags|slice(0, 50) }}...</td>
                 <td>
                     {% if project.active is same as(true) %}
                         <span class="badge bg-success">{{ 'Active'|trans }}</span>

@@ -32,14 +32,6 @@ class AppFixtures extends Fixture
         $manager->persist($org);
         $manager->flush();
 
-        $identifier = $faker->unique()->numerify('##############');
-
-        $org = (new Organization())
-            ->setName('ALPHA SOFT')
-            ->setIdentifier($identifier);
-
-        $manager->persist($org);
-        $manager->flush();
         $orgUnit = $manager->getRepository(OrganizationUnit::class)->findOneBy(['organization' => $org]);
 
         for ($i = 0; $i < 20; $i++) {

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Entity\Setting;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231105153026 extends AbstractMigration
+final class Version20231118144615 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,6 +29,7 @@ final class Version20231105153026 extends AbstractMigration
         $this->addSql('CREATE TABLE project_category_reference_status (id INT AUTO_INCREMENT NOT NULL, project_category_reference_id INT DEFAULT NULL, task_status_reference_id INT NOT NULL, is_initial TINYINT(1) DEFAULT 0 NOT NULL, closes_task TINYINT(1) DEFAULT 0 NOT NULL, `order` INT DEFAULT 0 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_9BCFDF498ADDA071 (project_category_reference_id), INDEX IDX_9BCFDF49B1331163 (task_status_reference_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_file (id INT AUTO_INCREMENT NOT NULL, project_id INT NOT NULL, file_id INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B50EFE08166D1F9C (project_id), UNIQUE INDEX UNIQ_B50EFE0893CB796C (file_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_user (id INT AUTO_INCREMENT NOT NULL, project_id INT NOT NULL, user_id INT NOT NULL, permissions JSON NOT NULL COMMENT \'(DC2Type:json)\', created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B4021E51166D1F9C (project_id), INDEX IDX_B4021E51A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE setting (id INT AUTO_INCREMENT NOT NULL, `key` VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, editable TINYINT(1) DEFAULT 0 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_9F74B8984E645A7E (`key`), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, updated_by_id INT DEFAULT NULL, assigned_to_id INT DEFAULT NULL, project_id INT NOT NULL, task_category_reference_id INT DEFAULT NULL, last_status_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, priority VARCHAR(255) NOT NULL, estimated_time NUMERIC(5, 2) DEFAULT NULL, actual_time NUMERIC(5, 2) DEFAULT NULL, start_date DATETIME DEFAULT NULL, due_date DATETIME DEFAULT NULL, percentage_completed INT DEFAULT 0 NOT NULL, active TINYINT(1) DEFAULT 1 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_527EDB25A76ED395 (user_id), INDEX IDX_527EDB25896DBBDE (updated_by_id), INDEX IDX_527EDB25F4BD7827 (assigned_to_id), INDEX IDX_527EDB25166D1F9C (project_id), INDEX IDX_527EDB2576141532 (task_category_reference_id), UNIQUE INDEX UNIQ_527EDB257C38DFBB (last_status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_category_reference (id INT AUTO_INCREMENT NOT NULL, organization_unit_id INT NOT NULL, label VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_7CF04536356FF84E (organization_unit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_comment (id INT AUTO_INCREMENT NOT NULL, task_id INT NOT NULL, user_id INT NOT NULL, content LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_8B9578868DB60186 (task_id), INDEX IDX_8B957886A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
@@ -111,6 +113,7 @@ final class Version20231105153026 extends AbstractMigration
         $this->addSql('DROP TABLE project_category_reference_status');
         $this->addSql('DROP TABLE project_file');
         $this->addSql('DROP TABLE project_user');
+        $this->addSql('DROP TABLE setting');
         $this->addSql('DROP TABLE task');
         $this->addSql('DROP TABLE task_category_reference');
         $this->addSql('DROP TABLE task_comment');
@@ -121,5 +124,15 @@ final class Version20231105153026 extends AbstractMigration
         $this->addSql('DROP TABLE task_user');
         $this->addSql('DROP TABLE user');
         $this->addSql('DROP TABLE messenger_messages');
+    }
+
+    public function postUp(Schema $schema): void
+    {
+        $this->connection->insert('setting', [
+            '`key`' => Setting::KEY_INSTALLATION_REQUIRED,
+            'value' => true,
+            'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+            'updated_at' => (new \DateTime())->format('Y-m-d H:i:s')
+        ]);
     }
 }

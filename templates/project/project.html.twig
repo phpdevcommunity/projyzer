@@ -22,9 +22,9 @@
                         <h5>📊 {{ 'Project Information' | trans }}</h5>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">
-                            📄 {{ project.description|nl2br }}
-                        </p>
+                        <div class="card-text">
+                            {{ project.description|md2html }}
+                        </div>
                         <p class="card-text">{{ 'Created by'|trans }} : 🧑‍💻 <strong>{{ project.createdBy.username }}</strong> - {{ project.createdAt|date('d/m/Y H:i') }}</p>
                         <p class="card-text">{{ 'Last Updated'|trans }} : {{ project.updatedAt|date('d/m/Y H:i') }}</p>
                     </div>

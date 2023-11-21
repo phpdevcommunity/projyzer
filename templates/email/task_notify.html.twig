@@ -21,6 +21,6 @@
 <p>{{ 'task_update.cta'|trans }}</p>
 <a href="{{ urlTask }}">#{{ task.id }} {{ task.title }}</a>
 
-<p>{{ 'task_update.signature'|trans({ '%organizationName%': organizationName }) }}</p>
+<p>{{ 'task_update.signature'|trans({ '%organizationName%': task.project.organizationUnit.name|default('') }) }}</p>
 </body>
 </html>
