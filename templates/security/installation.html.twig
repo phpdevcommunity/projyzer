@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="text-center mt-3">
-        <h1>{{ "instalation.title"|trans }}</h1>
+    <div class="text-center mt-3 mb-3">
+        <h1>{{ "installation.title"|trans }} 🛠️</h1>
     </div>
     <div class="card container w-100 m-auto p-3">
         {{ form_start(form) }}
         {{ form_row(form.organizationName) }}
         {{ form_row(form.organizationIdentifier) }}
         {{ form_row(form.username) }}
+        {{ form_row(form.password) }}
         {{ form_row(form.email) }}
         {{ form_row(form.lastname) }}
         {{ form_row(form.firstname) }}

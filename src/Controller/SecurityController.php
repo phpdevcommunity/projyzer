@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Organization;
+use App\Entity\OrganizationUnit;
+use App\Entity\ProjectCategoryReference;
 use App\Entity\Setting;
+use App\Entity\TaskCategoryReference;
+use App\Entity\TaskStatusReference;
 use App\Entity\User;
 
 use App\Form\Install\InstallationDataType;
@@ -16,6 +20,7 @@ use App\Repository\OrganizationRepository;
 use App\Repository\SettingRepository;
 use App\Repository\UserRepository;
 use App\Service\UserService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -32,7 +37,6 @@ use Throwable;
 
 class SecurityController extends AbstractController
 {
-
     public function __construct(
         private readonly SettingRepository   $settingRepository,
         private readonly UserService         $userService,
@@ -42,7 +46,11 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/installation', name: 'app_installation')]
-    public function installation(Request $request): Response
+    public function installation(
+        Request                     $request,
+        EntityManagerInterface      $em,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
     {
         $setting = $this->settingRepository->findOneBy(['key' => Setting::KEY_INSTALLATION_REQUIRED]);
         if ((bool)$setting->getValue() === false) {
@@ -73,7 +81,63 @@ class SecurityController extends AbstractController
             }
 
             if ($error === false) {
-                dd($install);
+                $organization = (new Organization())
+                    ->setName($install->getOrganizationName())
+                    ->setIdentifier($install->getOrganizationIdentifier());
+
+                $em->persist($organization);
+                $em->flush($organization);
+
+                $organizationUnit = $em->getRepository(OrganizationUnit::class)->findOneBy(['organization' => $organization]);
+
+                $user = (new User())
+                    ->setUsername($install->getUsername())
+                    ->setEmail($install->getEmail())
+                    ->setActive(true)
+                    ->setLastname($install->getLastname())
+                    ->setFirstname($install->getFirstname())
+                    ->setRoles(['ROLE_ADMIN'])
+                    ->setOrganizationUnit($organizationUnit);
+                $user->setPassword($passwordHasher->hashPassword($user, $install->getPassword()));
+
+                $em->persist($user);
+                $setting->setValue(false);
+                $em->flush();
+
+                try {
+                    foreach ($data['projectCategoriesInitialisation'] as $label => $description) {
+                        $projectCategory = (new ProjectCategoryReference())
+                            ->setOrganizationUnit($organizationUnit)
+                            ->setLabel($label)
+                            ->setDescription($description);
+                        $em->persist($projectCategory);
+                    }
+                    $em->flush();
+
+                    foreach ($data['taskCategoriesInitialisation'] as $label => $description) {
+                        $taskCategory = (new TaskCategoryReference())
+                            ->setOrganizationUnit($organizationUnit)
+                            ->setLabel($label)
+                            ->setDescription($description);
+                        $em->persist($taskCategory);
+                    }
+                    $em->flush();
+
+                    foreach ($data['taskStatusesInitialisation'] as $label => $description) {
+                        $taskCategory = (new TaskStatusReference())
+                            ->setOrganizationUnit($organizationUnit)
+                            ->setLabel($label)
+                            ->setDescription($description);
+                        $em->persist($taskCategory);
+                    }
+
+                    $em->flush();
+                } catch (Throwable $e) {
+                    $this->addFlash('error', $this->translator->trans('initialisation.error'));
+                }
+
+                $this->addFlash('success', '🚀 ' . $this->translator->trans('installation.ok'));
+                return $this->redirectToRoute('app_homepage');
             }
         }
 

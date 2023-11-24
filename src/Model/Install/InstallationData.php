@@ -18,6 +18,15 @@ final class InstallationData
     #[Assert\NotNull]
     private ?string $username = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 50,
+        minMessage: "Le mot de passe doit comporter {{ limit }} caractères minimum.",
+        maxMessage: "Le mot de passe doit comporter {{ limit }} caractères maximum."
+    )]
+    private ?string $password = null;
+
     private ?string $firstname = null;
 
     private ?string $lastname = null;
@@ -61,6 +70,17 @@ final class InstallationData
     public function setUsername(?string $username): self
     {
         $this->username = $username;
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
         return $this;
     }
 
