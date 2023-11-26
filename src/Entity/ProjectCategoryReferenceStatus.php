@@ -33,6 +33,11 @@ class ProjectCategoryReferenceStatus
     #[ORM\JoinColumn(name:'task_status_reference_id', nullable: false)]
     private ?TaskStatusReference $taskStatusReference = null;
 
+    public function __toString(): string
+    {
+        return $this->getTaskStatusReference()?->getLabel();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

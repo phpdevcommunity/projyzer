@@ -82,13 +82,13 @@ class UserCrudController extends AbstractCrudController
             ->setRequired(false)
             ->renderExpanded()
             ->allowMultipleChoices()
-            ->onlyOnForms()
             ->setColumns(12);
         yield BooleanField::new('active')
             ->hideWhenCreating()
             ->setColumns(12);
         yield BooleanField::new('sendActivationEmail')
             ->setLabel('Send activation information to the user')
+            ->onlyOnForms()
             ->setColumns(12);
         yield DateTimeField::new('createdAt')->hideOnForm();
         yield DateTimeField::new('updatedAt')->hideOnForm();

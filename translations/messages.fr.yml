@@ -1,4 +1,5 @@
 add_a_comment: Ajouter un commentaire
+submit: Envoyer
 comment_added_successfully: Commentaire ajouté avec succès
 project_closed_error: Désolé, le projet est actuellement fermé, vous ne pouvez pas ajouter de nouvelles tâches ou tickets.
 category_initialization_error: "Vous devez définir un statut d'initialisation par défaut pour la catégorie : %s"
@@ -29,7 +30,7 @@ Category: Catégorie
 Title: Titre
 Priority: Priorité
 Status: Statut
-Assign to: Assigner à
+Assign to: Assigné à
 estimatedTime: Temps estimé
 actualTime: Temps passé
 Edit: Modifier
@@ -95,7 +96,7 @@ Projects and Tasks: Projets et tâches
 Project Categories: Catégories de projets
 Task Categories: Catégories de tâches
 Task Statuses: Statuts de tâches
-Tasks in Categories: Tâches dans les catégories
+Statuses in Categories: Statuts de catégorie de projet
 Users: Utilisateurs
 Manage Users: Gérer les utilisateurs
 Name: Nom
@@ -151,3 +152,31 @@ email:
     link: 'Cliquez ici pour activer votre compte'
     alt_link: "Si le lien ne fonctionne pas, vous pouvez copier-coller l'URL suivante dans la barre d'adresse de votre navigateur"
     signature: 'Meilleures salutations, %organizationName%'
+task_update_subject: "[%project%] Demande : %task%"
+task_update:
+  title: "Demande %taskNumber%"
+  intro: "Bonjour %user%,"
+  content: "Une tâche/demande dans le projet [%project%] a été mise à jour. Voici les détails :"
+  details:
+    - "Titre de la tâche : %task%"
+    - "Auteur : %createdBy%"
+    - "Statut : %status%"
+    - "Priorité : %priority%"
+    - "Assigné à : %assignedTo%"
+    - "Mis à jour par : %updatedBy%"
+  cta: "Vous pouvez consulter la tâche en cliquant sur le lien suivant :"
+  signature: "Cordialement, %organizationName%"
+
+username_connexion: "Identifiant de connexion"
+installation.title: "Installation de projyser"
+installation.email: "Email"
+organizationName: "Nom de l'organisation"
+organizationIdentifier: "Identifiant de l'organisation (SIRET ou SIREN)"
+lastname: "Nom de famille"
+firstname: "Prénom"
+projectCategoriesInitialisation: "Initialisation des catégories de projet"
+taskCategoriesInitialisation: "Initialisation des catégories de tâches"
+taskStatusesInitialisation: "Initialisation des statuts de tâches"
+installation.button_save: "Enregistrer"
+installation.ok: "L'installation s'est déroulée avec succès. Vous pouvez maintenant commencer à utiliser l'application !"
+initialisation.error: "Une erreur s'est produite lors de l'initialisation. Veuillez vérifier les données fournies et réessayer dans la partie administrateur"

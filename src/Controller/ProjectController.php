@@ -8,6 +8,7 @@ use App\Entity\Project;
 use App\Entity\ProjectCategoryReference;
 use App\Entity\ProjectCategoryReferenceStatus;
 use App\Entity\ProjectFile;
+use App\Entity\TaskStatusReference;
 use App\Entity\User;
 use App\Form\ProjectType;
 use App\Repository\ProjectCategoryReferenceRepository;
@@ -146,7 +147,7 @@ class ProjectController extends AbstractController
         }
 
         /**
-         * @var array<ProjectCategoryReferenceStatus> $statuses
+         * @var array<TaskStatusReference> $statuses
          */
         $statuses = $project->getProjectCategoryReference()?->getStatuses() ?: [];
 
@@ -193,7 +194,7 @@ class ProjectController extends AbstractController
         return $this->redirectReferer($request);
     }
 
-    #[Route('/file/{projectFile}', name: 'projects_file', methods: ['GET'])]
+    #[Route('/file/{uid}', name: 'projects_file', methods: ['GET'])]
     public function projectFile(Request $request, projectFile $projectFile): Response
     {
         /**

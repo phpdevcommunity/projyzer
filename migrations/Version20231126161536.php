@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Entity\Setting;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231105153026 extends AbstractMigration
+final class Version20231126161536 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,19 +21,20 @@ final class Version20231105153026 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE file (id INT AUTO_INCREMENT NOT NULL, uid VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, size INT DEFAULT NULL, mime_type VARCHAR(100) NOT NULL, content LONGBLOB NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE file (id INT AUTO_INCREMENT NOT NULL, uid VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, size INT DEFAULT NULL, mime_type VARCHAR(100) NOT NULL, content LONGBLOB NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_8C9F3610539B0606 (uid), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE organization (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, identifier VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_C1EE637C772E836A (identifier), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE organization_unit (id INT AUTO_INCREMENT NOT NULL, organization_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, code VARCHAR(10) NOT NULL, identifier VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_E5B232CE772E836A (identifier), INDEX IDX_E5B232CE32C8A3DE (organization_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, organization_unit_id INT NOT NULL, project_category_reference_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, slug VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, active TINYINT(1) DEFAULT 0 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_2FB3D0EE989D9B62 (slug), INDEX IDX_2FB3D0EEA76ED395 (user_id), INDEX IDX_2FB3D0EE356FF84E (organization_unit_id), INDEX IDX_2FB3D0EE8ADDA071 (project_category_reference_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_category_reference (id INT AUTO_INCREMENT NOT NULL, organization_unit_id INT NOT NULL, label VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_DF916542356FF84E (organization_unit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_category_reference_status (id INT AUTO_INCREMENT NOT NULL, project_category_reference_id INT DEFAULT NULL, task_status_reference_id INT NOT NULL, is_initial TINYINT(1) DEFAULT 0 NOT NULL, closes_task TINYINT(1) DEFAULT 0 NOT NULL, `order` INT DEFAULT 0 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_9BCFDF498ADDA071 (project_category_reference_id), INDEX IDX_9BCFDF49B1331163 (task_status_reference_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE project_file (id INT AUTO_INCREMENT NOT NULL, project_id INT NOT NULL, file_id INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B50EFE08166D1F9C (project_id), UNIQUE INDEX UNIQ_B50EFE0893CB796C (file_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE project_file (id INT AUTO_INCREMENT NOT NULL, project_id INT NOT NULL, file_id INT NOT NULL, uid VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_B50EFE08539B0606 (uid), INDEX IDX_B50EFE08166D1F9C (project_id), UNIQUE INDEX UNIQ_B50EFE0893CB796C (file_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_user (id INT AUTO_INCREMENT NOT NULL, project_id INT NOT NULL, user_id INT NOT NULL, permissions JSON NOT NULL COMMENT \'(DC2Type:json)\', created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B4021E51166D1F9C (project_id), INDEX IDX_B4021E51A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE setting (id INT AUTO_INCREMENT NOT NULL, `key` VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, editable TINYINT(1) DEFAULT 0 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_9F74B8984E645A7E (`key`), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, updated_by_id INT DEFAULT NULL, assigned_to_id INT DEFAULT NULL, project_id INT NOT NULL, task_category_reference_id INT DEFAULT NULL, last_status_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, priority VARCHAR(255) NOT NULL, estimated_time NUMERIC(5, 2) DEFAULT NULL, actual_time NUMERIC(5, 2) DEFAULT NULL, start_date DATETIME DEFAULT NULL, due_date DATETIME DEFAULT NULL, percentage_completed INT DEFAULT 0 NOT NULL, active TINYINT(1) DEFAULT 1 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_527EDB25A76ED395 (user_id), INDEX IDX_527EDB25896DBBDE (updated_by_id), INDEX IDX_527EDB25F4BD7827 (assigned_to_id), INDEX IDX_527EDB25166D1F9C (project_id), INDEX IDX_527EDB2576141532 (task_category_reference_id), UNIQUE INDEX UNIQ_527EDB257C38DFBB (last_status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_category_reference (id INT AUTO_INCREMENT NOT NULL, organization_unit_id INT NOT NULL, label VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_7CF04536356FF84E (organization_unit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_comment (id INT AUTO_INCREMENT NOT NULL, task_id INT NOT NULL, user_id INT NOT NULL, content LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_8B9578868DB60186 (task_id), INDEX IDX_8B957886A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_comment_file (id INT AUTO_INCREMENT NOT NULL, task_comment_id INT NOT NULL, file_id INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_6238B0D1E47A36BC (task_comment_id), UNIQUE INDEX UNIQ_6238B0D193CB796C (file_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE task_file (id INT AUTO_INCREMENT NOT NULL, task_id INT NOT NULL, file_id INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_FF2CA26B8DB60186 (task_id), UNIQUE INDEX UNIQ_FF2CA26B93CB796C (file_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE task_file (id INT AUTO_INCREMENT NOT NULL, task_id INT NOT NULL, file_id INT NOT NULL, uid VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_FF2CA26B539B0606 (uid), INDEX IDX_FF2CA26B8DB60186 (task_id), UNIQUE INDEX UNIQ_FF2CA26B93CB796C (file_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_status (id INT AUTO_INCREMENT NOT NULL, task_id INT NOT NULL, user_id INT DEFAULT NULL, label VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_40A9E1CF8DB60186 (task_id), INDEX IDX_40A9E1CFA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_status_reference (id INT AUTO_INCREMENT NOT NULL, organization_unit_id INT NOT NULL, label VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B6CFA154356FF84E (organization_unit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task_user (id INT AUTO_INCREMENT NOT NULL, task_id INT NOT NULL, user_id INT NOT NULL, permissions JSON NOT NULL COMMENT \'(DC2Type:json)\', created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_FE2042328DB60186 (task_id), INDEX IDX_FE204232A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
@@ -111,6 +113,7 @@ final class Version20231105153026 extends AbstractMigration
         $this->addSql('DROP TABLE project_category_reference_status');
         $this->addSql('DROP TABLE project_file');
         $this->addSql('DROP TABLE project_user');
+        $this->addSql('DROP TABLE setting');
         $this->addSql('DROP TABLE task');
         $this->addSql('DROP TABLE task_category_reference');
         $this->addSql('DROP TABLE task_comment');
@@ -121,5 +124,15 @@ final class Version20231105153026 extends AbstractMigration
         $this->addSql('DROP TABLE task_user');
         $this->addSql('DROP TABLE user');
         $this->addSql('DROP TABLE messenger_messages');
+    }
+
+    public function postUp(Schema $schema): void
+    {
+        $this->connection->insert('setting', [
+            '`key`' => Setting::KEY_INSTALLATION_REQUIRED,
+            'value' => true,
+            'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+            'updated_at' => (new \DateTime())->format('Y-m-d H:i:s')
+        ]);
     }
 }

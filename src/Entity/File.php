@@ -17,7 +17,7 @@ class File
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false)]
+    #[ORM\Column(type: Types::STRING, unique: true, nullable: false)]
     private ?string $uid = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]

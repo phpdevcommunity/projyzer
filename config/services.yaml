@@ -8,6 +8,7 @@ parameters:
     mailer_from: '%env(MAILER_FROM)%'
     router.request_context.scheme: 'https'
     asset.request_context.secure: true
+    app.supported_locales: 'en|fr'
 
 services:
     # default configuration for services in *this* file

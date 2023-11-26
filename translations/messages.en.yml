@@ -1,4 +1,5 @@
 add_a_comment: Add a comment
+submit: Submit
 comment_added_successfully: Comment added successfully
 project_closed_error: Sorry, the project is currently closed, you cannot add new tasks or tickets.
 category_initialization_error: "You must set a default initialization status for the category: %s"
@@ -95,7 +96,7 @@ Projects and Tasks: Projects and Tasks
 Project Categories: Project Categories
 Task Categories: Task Categories
 Task Statuses: Task Statuses
-Tasks in Categories: Tasks in Categories
+Statuses in Categories: Statuses in Categories
 Users: Users
 Manage Users: Manage Users
 Name: Name
@@ -152,3 +153,27 @@ email:
     link: 'Click on the following link to activate your account:'
     alt_link: "If the link doesn't work, you can copy and paste the following URL into your browser address bar"
     signature: 'Best regards, %organizationName%'
+task_update_subject: "[%project%] Request : %task%"
+task_update:
+  title: "Request %taskNumber%"
+  intro: "Hello %user%,"
+  content: "A task in project [%project%] has been updated. Here are the details:"
+  details:
+    0: "Task Title: %task%"
+    1: "Updated by: %updatedBy%"
+    2: "Date: %updatedAt%"
+  cta: "You can view the task by clicking on the following link:"
+  signature: "Best regards, %organizationName%"
+username_connexion: "Connection Username"
+installation.title: "Projyser Installation"
+installation.email: "Email"
+organizationName: "Organization Name"
+organizationIdentifier: "Organization Identifier (SIRET or SIREN)"
+lastname: "Last Name"
+firstname: "First Name"
+projectCategoriesInitialisation: "Initialization of Project Categories"
+taskCategoriesInitialisation: "Initialization of Task Categories"
+taskStatusesInitialisation: "Initialization of Task Statuses"
+installation.button_save: "Save"
+installation.ok: 'Installation completed successfully. You can now start using the application!'
+initialisation.error: "An error occurred during initialization. Please check the provided data and try again in the admin section."

@@ -43,10 +43,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Manage Organizations', 'fas fa-sitemap', Organization::class);
         yield MenuItem::linkToCrud('Manage Organization Units', 'fas fa-sitemap', OrganizationUnit::class);
         yield MenuItem::section('Projects and Tasks');
-        yield MenuItem::linkToCrud('Project Categories', 'fas fa-list', ProjectCategoryReference::class);
         yield MenuItem::linkToCrud('Task Categories', 'fas fa-list', TaskCategoryReference::class);
         yield MenuItem::linkToCrud('Task Statuses', 'fas fa-list', TaskStatusReference::class);
-        yield MenuItem::linkToCrud('Tasks in Categories', 'fas fa-list', ProjectCategoryReferenceStatus::class);
+        yield MenuItem::linkToCrud('Project Categories', 'fas fa-list', ProjectCategoryReference::class);
+        yield MenuItem::linkToCrud('Statuses in Categories', 'fas fa-list', ProjectCategoryReferenceStatus::class);
         yield MenuItem::section('Users');
         yield MenuItem::linkToCrud('Manage Users', 'fas fa-user', User::class);
     }

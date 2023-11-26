@@ -43,6 +43,7 @@ class ProjectType extends AbstractType
                 'label' => 'name'
             ])
             ->add('description', TextareaType::class, [
+                'required' => false,
                 'label' => 'description',
                 "attr" => [
                     'rows' => 8
@@ -54,6 +55,7 @@ class ProjectType extends AbstractType
                 'multiple' => true,
             ])
             ->add('projectUsersWithoutOwner', CollectionType::class, [
+                'required' => false,
                 'label' => false,
                 'entry_type' => ProjectUserType::class,
                 'entry_options' => ['label' => false],

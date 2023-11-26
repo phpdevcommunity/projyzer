@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="{{ app.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'email.activation.title'|trans }}</title>
+</head>
+<body>
+<h1>{{ 'task_update.title'|trans }}</h1>
+
+<p>{{ 'task_update.intro'|trans({ '%user%': user.username }) }}</p>
+<p>{{ 'task_update.content'|trans }}</p>
+
+<ul>
+    <li>{{ 'task_update.details.0'|trans({ '%task%': task.title }) }}</li>
+    {% if task.updatedBy %}
+    <li>{{ 'task_update.details.1'|trans({ '%updatedBy%': task.updatedBy.username }) }}</li>
+    <li>{{ 'task_update.details.2'|trans({ '%updatedAt%': task.updatedAt|date('d/m/Y H:i') }) }}</li>
+    {% endif %}
+</ul>
+
+<p>{{ 'task_update.cta'|trans }}</p>
+<a href="{{ urlTask }}">#{{ task.id }} {{ task.title }}</a>
+
+<p>{{ 'task_update.signature'|trans({ '%organizationName%': task.project.organizationUnit.name|default('') }) }}</p>
+</body>
+</html>

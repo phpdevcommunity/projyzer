@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\Text;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -71,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setUsername(string $username): static
     {
-        $this->username = $username;
+        $this->username = Text::strtolower($username);
 
         return $this;
     }
@@ -115,7 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(?string $email): self
     {
-        $this->email = $email;
+        $this->email = Text::strtolower($email);
         return $this;
     }
 
