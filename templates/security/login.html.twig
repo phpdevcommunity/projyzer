@@ -8,6 +8,16 @@
         {% if error %}
             <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
+        {% if is_demo is same as(true) %}
+        <div class="alert alert-info" role="alert">
+            {{ "Demo Accounts"|trans }} :<br/>
+            {% for user in constant('App\\DataFixtures\\AppFixtures::DEFAULT_USERS') %}
+                {{ user.username }}/({{ user.roles|trans }})<br>
+            {% endfor %}
+            <hr>
+            {{ "Password"|trans }} : projyzer
+        </div>
+        {% endif %}
         <div class="form-floating">
             <input type="text" name="_username" class="form-control" id="username" placeholder="">
             <label for="username">{{ "Username"|trans }}</label>

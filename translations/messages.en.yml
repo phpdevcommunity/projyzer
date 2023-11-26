@@ -121,6 +121,7 @@ Roles: Roles
 ROLE_USER: User
 ROLE_ADMIN: Administrator
 ROLE_SUPER_ADMIN: Super Administrator
+Demo Accounts : Demo Accounts
 connected_as: 'Connected as'
 Create an Account: Create an Account
 Change my password: "Change my password"

@@ -121,6 +121,7 @@ Roles: Rôles
 ROLE_USER: Utilisateur
 ROLE_ADMIN: Administrateur
 ROLE_SUPER_ADMIN: Super Administrateur
+Demo Accounts : Comptes démo
 connected_as: 'Connecté en tant que'
 Create an Account: "Activation de votre Compte"
 Change my password: "Modifier mon mot de passe"

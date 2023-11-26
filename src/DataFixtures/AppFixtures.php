@@ -20,6 +20,43 @@ use Faker;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * DEFAULT_PASSWORD = projyzer
+     */
+    private const DEFAULT_PASSWORD = '$2y$13$1oUGYr0AQiDBX2QeVBOxseOHHHM/ExNSIzOxBjYwfgZRE2wkUaDUi';
+    public const DEFAULT_USERS = [
+        [
+            "username" => "guillaume34",
+            "roles" => 'ROLE_USER',
+            "password" => self::DEFAULT_PASSWORD,
+        ],
+        [
+            "username" => "marie.roger",
+            "roles" => 'ROLE_USER',
+            "password" => self::DEFAULT_PASSWORD,
+        ],
+        [
+            "username" => "celina.begue",
+            "roles" => 'ROLE_USER',
+            "password" => self::DEFAULT_PASSWORD,
+        ],
+        [
+            "username" => "mace.michelle",
+            "roles" => 'ROLE_USER',
+            "password" => self::DEFAULT_PASSWORD,
+        ],
+        [
+            "username" => "jdelattre",
+            "roles" => 'ROLE_USER',
+            "password" => self::DEFAULT_PASSWORD,
+        ],
+        [
+            "username" => "xavier71",
+            "roles" => 'ROLE_ADMIN',
+            "password" => self::DEFAULT_PASSWORD,
+        ],
+    ];
+
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
@@ -34,7 +71,7 @@ class AppFixtures extends Fixture
         $identifier = $faker->unique()->numerify('##############');
 
         $org = (new Organization())
-            ->setName('DEVCODER')
+            ->setName('PROJYZER')
             ->setIdentifier($identifier);
 
         $manager->persist($org);
@@ -42,26 +79,16 @@ class AppFixtures extends Fixture
 
         $orgUnit = $manager->getRepository(OrganizationUnit::class)->findOneBy(['organization' => $org]);
 
-        for ($i = 0; $i < 20; $i++) {
+        foreach (self::DEFAULT_USERS as $userArray) {
             $user = (new User())
-                ->setUsername($faker->unique()->userName)
-                ->setPassword('$2y$13$rLgSpVp2kKLIuDJ1w3HjJulUKKrXaYd/NA/RQlEjZlWCcIm9uUN.m')
+                ->setUsername($userArray['username'])
+                ->setPassword($userArray['password'])
                 ->setActive(true)
-                ->setRoles(['ROLE_USER'])
+                ->setRoles([$userArray['roles']])
                 ->setOrganizationUnit($orgUnit)
                 ->setEmail($faker->unique()->email);
             $manager->persist($user);
         }
-
-        $user = (new User())
-            ->setUsername($faker->unique()->userName)
-            ->setPassword('$2y$13$rLgSpVp2kKLIuDJ1w3HjJulUKKrXaYd/NA/RQlEjZlWCcIm9uUN.m')
-            ->setActive(true)
-            ->setRoles(['ROLE_ADMIN'])
-            ->setOrganizationUnit($orgUnit)
-            ->setEmail($faker->unique()->email);
-        $manager->persist($user);
-
         $manager->flush();
 
         $user = (new User())
@@ -99,9 +126,9 @@ class AppFixtures extends Fixture
             foreach ($statuses as $status) {
                 $category->addProjectCategoryReferenceStatus(
                     (new ProjectCategoryReferenceStatus())
-                    ->setTaskStatusReference($status)
-                    ->setIsInitial($status->getLabel() == 'NOUVEAU')
-                    ->setClosesTask($status->getLabel() == 'FERMÉE')
+                        ->setTaskStatusReference($status)
+                        ->setIsInitial($status->getLabel() == 'NOUVEAU')
+                        ->setClosesTask($status->getLabel() == 'FERMÉE')
                 );
             }
             $manager->persist($category);
@@ -208,25 +235,33 @@ class AppFixtures extends Fixture
     public function getTaskStatuses(): array
     {
         return [
-            'Nouveau' => "La tâche ou le projet est nouvellement créé ou ajouté au système, mais n'a pas encore été attribué ou planifié pour être réalisé.",
-            'À Faire' => 'La tâche ou le projet est à planifier et à réaliser.',
-            'Terminée - Production' => 'La phase de production de la tâche ou du projet est terminée.',
-            'En Cours - Développement' => 'La tâche ou le projet est actuellement en phase de développement.',
-            'À Faire - Développement' => 'La tâche ou le projet est à planifier et à réaliser dans la phase de développement.',
-            'Terminée - Développement' => 'La phase de développement de la tâche ou du projet est terminée.',
-            'En Cours - Recette' => 'La tâche ou le projet est en cours de recette ou de test.',
-            'À Faire - Recette' => 'La tâche ou le projet est à planifier et à réaliser dans la phase de recette.',
-            'Terminée - Recette' => 'La phase de recette de la tâche ou du projet est terminée.',
-            'En Cours - Pré-Production' => 'La tâche ou le projet est en cours de préparation pour la production.',
-            'À Faire - Pré-Production' => 'La tâche ou le projet est à planifier et à réaliser dans la phase de pré-production.',
-            'Terminée - Pré-Production' => 'La phase de pré-production de la tâche ou du projet est terminée.',
-            'En Cours - Production' => 'La tâche ou le projet est en cours de production ou d\'exécution.',
-            'À Faire - Production' => 'La tâche ou le projet est à planifier et à réaliser dans la phase de production.',
-            'Abandonnée' => 'La tâche ou le projet a été abandonnée ou annulée.',
-            'Reportée' => 'La tâche ou le projet a été reportée à une date ultérieure.',
-            'Bloquée' => 'La tâche ou le projet est bloquée en raison de problèmes ou de contraintes.',
-            'Validée' => 'La tâche ou le projet a été validée et approuvée.',
-            'Fermée' => 'La tâche ou le projet est clôturée et considérée comme terminée.'
+            'Nouveau' => "La tâche est nouvellement créé ou ajouté au système, mais n'a pas encore été attribué ou planifié pour être réalisé.",
+            'Validée' => 'La tâche a été validée et approuvée.',
+
+            'À Faire' => 'La tâche est à planifier et à réaliser.',
+            'En Cours' => 'La tâche est actuellement en phase de développement.',
+            'Terminée' => 'La tâche est est terminée.',
+
+            'À Faire - Développement' => 'La tâche est à planifier et à réaliser dans la phase de développement.',
+            'En Cours - Développement' => 'La tâche est actuellement en phase de développement.',
+            'Terminée - Développement' => 'La phase de développement de la tâche est terminée.',
+
+            'À Faire - Recette' => 'La tâche est à planifier et à réaliser dans la phase de recette.',
+            'En Cours - Recette' => 'La tâche est en cours de recette ou de test.',
+            'Terminée - Recette' => 'La phase de recette de la tâche est terminée.',
+
+            'À Faire - Pré-Production' => 'La tâche est à planifier et à réaliser dans la phase de pré-production.',
+            'En Cours - Pré-Production' => 'La tâche est en cours de préparation pour la production.',
+            'Terminée - Pré-Production' => 'La phase de pré-production de la tâche est terminée.',
+
+            'À Faire - Production' => 'La tâche est à planifier et à réaliser dans la phase de production.',
+            'En Cours - Production' => 'La tâche est en cours de production ou d\'exécution.',
+            'Terminée - Production' => 'La phase de production de la tâche est terminée.',
+
+            'Abandonnée' => 'La tâche a été abandonnée ou annulée.',
+            'Reportée' => 'La tâche a été reportée à une date ultérieure.',
+            'Bloquée' => 'La tâche est bloquée en raison de problèmes ou de contraintes.',
+            'Fermée' => 'La tâche est clôturée et considérée comme terminée.'
         ];
     }
 }
