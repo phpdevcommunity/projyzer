@@ -26,7 +26,7 @@ class ProjectCategoryReference
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: "projectCategoryReference", targetEntity: ProjectCategoryReferenceStatus::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private iterable $statuses;
+    private iterable $projectCategoryReferenceStatuses;
 
     #[ORM\ManyToOne(targetEntity: OrganizationUnit::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name:'organization_unit_id', nullable: false)]
@@ -34,7 +34,7 @@ class ProjectCategoryReference
 
     public function __construct()
     {
-        $this->statuses = new ArrayCollection();
+        $this->projectCategoryReferenceStatuses = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -69,24 +69,54 @@ class ProjectCategoryReference
         return $this;
     }
 
-    public function getStatuses(): Collection
+    public function getStatuses(): iterable
     {
-        return $this->statuses;
+        return $this->getProjectCategoryReferenceStatuses()->map(function (ProjectCategoryReferenceStatus $status) {
+            return $status->getTaskStatusReference();
+        })->toArray();
     }
 
-    public function addStatus(ProjectCategoryReferenceStatus $status): self
+    public function addStatus(TaskStatusReference $taskStatusReference) : self
     {
-        $status->setProjectCategoryReference($this);
-        if (!$this->statuses->contains($status)) {
-            $this->statuses->add($status);
+        $this->addProjectCategoryReferenceStatus(
+            (new ProjectCategoryReferenceStatus())->setTaskStatusReference($taskStatusReference)
+        );
+        return $this;
+    }
+
+    public function removeStatus(TaskStatusReference $taskStatusReference) : self
+    {
+        $statuses = $this->getProjectCategoryReferenceStatuses()->filter(function (ProjectCategoryReferenceStatus $projectCategoryReferenceStatus) use ($taskStatusReference) {
+            return $projectCategoryReferenceStatus->getTaskStatusReference() === $taskStatusReference;
+        });
+
+        foreach ($statuses as $status) {
+            $this->getProjectCategoryReferenceStatuses()->removeElement($status);
         }
         return $this;
     }
 
-    public function removeStatus(ProjectCategoryReferenceStatus $status) : self
+    public function getProjectCategoryReferenceStatuses(): Collection
     {
-        if ($this->statuses->contains($status)) {
-            $this->statuses->removeElement($status);
+        return $this->projectCategoryReferenceStatuses;
+    }
+
+    public function addProjectCategoryReferenceStatus(ProjectCategoryReferenceStatus $status): self
+    {
+        $status->setProjectCategoryReference($this);
+        $statuses = $this->getProjectCategoryReferenceStatuses()->filter(function (ProjectCategoryReferenceStatus $projectCategoryReferenceStatus) use ($status) {
+            return $projectCategoryReferenceStatus->getTaskStatusReference() === $status?->getTaskStatusReference();
+        });
+        if ($statuses->isEmpty()) {
+            $this->getProjectCategoryReferenceStatuses()->add($status);
+        }
+        return $this;
+    }
+
+    public function removeProjectCategoryReferenceStatus(ProjectCategoryReferenceStatus $status) : self
+    {
+        if ($this->projectCategoryReferenceStatuses->contains($status)) {
+            $this->projectCategoryReferenceStatuses->removeElement($status);
         }
         return $this;
     }

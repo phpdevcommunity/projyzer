@@ -1,4 +1,5 @@
 add_a_comment: Add a comment
+submit: Submit
 comment_added_successfully: Comment added successfully
 project_closed_error: Sorry, the project is currently closed, you cannot add new tasks or tickets.
 category_initialization_error: "You must set a default initialization status for the category: %s"
@@ -95,7 +96,7 @@ Projects and Tasks: Projects and Tasks
 Project Categories: Project Categories
 Task Categories: Task Categories
 Task Statuses: Task Statuses
-Tasks in Categories: Tasks in Categories
+Statuses in Categories: Statuses in Categories
 Users: Users
 Manage Users: Manage Users
 Name: Name

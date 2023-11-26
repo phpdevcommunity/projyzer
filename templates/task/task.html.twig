@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="background: rgba(11, 87, 208, 0.16);">
+            <div class="card-body" style="background: var(--pro--primary-bg-subtle);">
                 <h4 class="card-title">{{ task.title }}</h4>
                 <p class="">{{ 'Added by'|trans }} <strong>{{  task.createdBy.username }}</strong> - {{ task.createdAt|date('d/m/Y H:i') }}</p>
                 <div class="row">
@@ -67,7 +67,7 @@
                 <div class="card-body">
                     <div class="d-flex flex-column">
                         {% for taskFile in task.files %}
-                            <div>📄 <a target="_blank" href="{{ url('tasks_file', {taskFile : taskFile.id}) }}" class="">{{ taskFile.file.name }}</a></div>
+                            <div>📄 <a target="_blank" href="{{ url('tasks_file', {uid : taskFile.uid}) }}" class="">{{ taskFile.file.name }}</a></div>
                         {% endfor %}
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                         </div>
                     </li>
                 {% endfor %}
-                <li class="list-group-item bg-primary-subtle">
+                <li class="list-group-item" style="background: var(--pro--primary-bg-subtle);">
                     <div{% if project.active is same as(false) or task.canComment(app.user) is same as(false) %} disabled{% endif %}>
                         {{ form_start(form) }}
                         <div>

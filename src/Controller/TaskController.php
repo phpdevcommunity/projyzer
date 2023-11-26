@@ -76,7 +76,9 @@ class TaskController extends AbstractController
                 'required' => false,
                 'multiple' => true,
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'submit'
+            ])
             ->getForm();
 
         if ($project->isActive() && $form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -133,7 +135,7 @@ class TaskController extends AbstractController
         /**
          * @var Collection<ProjectCategoryReferenceStatus> $statuses
          */
-        $statuses = $project->getProjectCategoryReference()->getStatuses()->filter(function (ProjectCategoryReferenceStatus $status) {
+        $statuses = $project->getProjectCategoryReference()->getProjectCategoryReferenceStatuses()->filter(function (ProjectCategoryReferenceStatus $status) {
             return $status->getIsInitial() === true;
         });
         if ($statuses->isEmpty()) {
@@ -259,7 +261,7 @@ class TaskController extends AbstractController
         return $response;
     }
 
-    #[Route('/file/{taskFile}', name: 'tasks_file', methods: ['GET'])]
+    #[Route('/file/{uid}', name: 'tasks_file', methods: ['GET'])]
     public function taskFile(Request $request, taskFile $taskFile): Response
     {
         /**
@@ -271,6 +273,12 @@ class TaskController extends AbstractController
         if (!$file instanceof File) {
             throw new NotFoundHttpException();
         }
+
+        $task = $taskFile->getTask();
+        if (!$task->canAccess($user)) {
+            throw new AccessDeniedHttpException();
+        }
+
         $response = new Response(stream_get_contents($file->getContent()));
 
         if ($file->getMimeType() == 'application/pdf') {

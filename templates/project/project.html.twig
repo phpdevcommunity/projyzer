@@ -37,14 +37,14 @@
                         <div class="card-body">
                             <div class="d-flex flex-column">
                                 {% for projectFile in project.files %}
-                                    <div>📄 <a href="{{ url('projects_file', {projectFile : projectFile.id}) }}"
+                                    <div>📄 <a href="{{ url('projects_file', {uid : projectFile.uid}) }}"
                                               class="">{{ projectFile.file.name }}</a></div>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
                 {% endif %}
-                <div class="card">
+                <div class="card mb-2">
                     <div class="card-header">
                         <h5>🧑‍🤝‍🧑 {{ 'Members' | trans }}</h5>
                     </div>
@@ -65,7 +65,7 @@
                         <h5>📌 {{ 'Tasks' | trans }}</h5>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive max-h-75">
+                        <div class="table-responsive max-h-75" style="min-height: 500px;">
                             <table class="table table-hover" id="tasks">
                                 <thead>
                                 <tr>
@@ -115,8 +115,8 @@
                                                                     name="project_category_reference_id"
                                                                     class="form-select form-select-sm">
                                                                 {% for status in statuses %}
-                                                                    <option value="{{ status.id }}"{% if status.taskStatusReference.label == task.lastStatus.label %} selected="selected"{% endif %}>
-                                                                        {{ status.taskStatusReference.label }}
+                                                                    <option value="{{ status.id }}"{% if status.label == task.lastStatus.label %} selected="selected"{% endif %}>
+                                                                        {{ status.label }}
                                                                     </option>
                                                                 {% endfor %}
                                                             </select>

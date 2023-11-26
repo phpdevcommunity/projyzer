@@ -7,6 +7,7 @@ use App\Entity\OrganizationUnit;
 use App\Entity\Project;
 use App\Entity\ProjectCategoryReference;
 use App\Entity\ProjectCategoryReferenceStatus;
+use App\Entity\Setting;
 use App\Entity\Task;
 use App\Entity\TaskCategoryReference;
 use App\Entity\TaskComment;
@@ -22,6 +23,13 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
+
+        $setting = (new Setting())
+            ->setKey(Setting::KEY_INSTALLATION_REQUIRED)
+            ->setValue(false);
+
+        $manager->persist($setting);
+        $manager->flush();
 
         $identifier = $faker->unique()->numerify('##############');
 
@@ -89,7 +97,7 @@ class AppFixtures extends Fixture
                 ->setDescription($description);
 
             foreach ($statuses as $status) {
-                $category->addStatus(
+                $category->addProjectCategoryReferenceStatus(
                     (new ProjectCategoryReferenceStatus())
                     ->setTaskStatusReference($status)
                     ->setIsInitial($status->getLabel() == 'NOUVEAU')
@@ -202,6 +210,7 @@ class AppFixtures extends Fixture
         return [
             'Nouveau' => "La tâche ou le projet est nouvellement créé ou ajouté au système, mais n'a pas encore été attribué ou planifié pour être réalisé.",
             'À Faire' => 'La tâche ou le projet est à planifier et à réaliser.',
+            'Terminée - Production' => 'La phase de production de la tâche ou du projet est terminée.',
             'En Cours - Développement' => 'La tâche ou le projet est actuellement en phase de développement.',
             'À Faire - Développement' => 'La tâche ou le projet est à planifier et à réaliser dans la phase de développement.',
             'Terminée - Développement' => 'La phase de développement de la tâche ou du projet est terminée.',
@@ -213,7 +222,6 @@ class AppFixtures extends Fixture
             'Terminée - Pré-Production' => 'La phase de pré-production de la tâche ou du projet est terminée.',
             'En Cours - Production' => 'La tâche ou le projet est en cours de production ou d\'exécution.',
             'À Faire - Production' => 'La tâche ou le projet est à planifier et à réaliser dans la phase de production.',
-            'Terminée - Production' => 'La phase de production de la tâche ou du projet est terminée.',
             'Abandonnée' => 'La tâche ou le projet a été abandonnée ou annulée.',
             'Reportée' => 'La tâche ou le projet a été reportée à une date ultérieure.',
             'Bloquée' => 'La tâche ou le projet est bloquée en raison de problèmes ou de contraintes.',

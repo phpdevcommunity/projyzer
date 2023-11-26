@@ -8,9 +8,14 @@
         {{ form_start(form) }}
         {{ form_row(form.organizationName) }}
         {{ form_row(form.organizationIdentifier) }}
+        <hr>
         {{ form_row(form.username) }}
-        {{ form_row(form.password) }}
         {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        <div class="mb-2">
+            {{ form_help(form.password) }}
+        </div>
+        <hr>
         {{ form_row(form.lastname) }}
         {{ form_row(form.firstname) }}
         <hr>

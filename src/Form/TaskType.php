@@ -42,15 +42,14 @@ class TaskType extends AbstractType
             ->add('taskStatusReference', ChoiceType::class, [
                 'label' => 'Status',
                 'choice_label' => 'label',
-                'choices' => $projectCategoryReference->getStatuses()->map(function (ProjectCategoryReferenceStatus $projectCategoryReferenceStatus) {
-                    return $projectCategoryReferenceStatus->getTaskStatusReference();
-                }),
+                'choices' => $projectCategoryReference->getStatuses(),
                 'required' => true,
             ])
             ->add('title', TextType::class, [
                 'label' => 'title'
             ])
             ->add('description', TextareaType::class, [
+                'required' => false,
                 'label' => 'description',
                 "attr" => [
                     'rows' => 8
