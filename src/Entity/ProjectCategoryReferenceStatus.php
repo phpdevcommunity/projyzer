@@ -25,7 +25,7 @@ class ProjectCategoryReferenceStatus
     #[ORM\Column(name: '`order`', type: 'integer', options: ['default' => 0])]
     private int $order = 0;
 
-    #[ORM\ManyToOne(targetEntity: ProjectCategoryReference::class, cascade: ['persist'], inversedBy: "statuses")]
+    #[ORM\ManyToOne(targetEntity: ProjectCategoryReference::class, cascade: ['persist'], inversedBy: "projectCategoryReferenceStatuses")]
     #[ORM\JoinColumn(name:'project_category_reference_id', nullable: true)]
     private ?ProjectCategoryReference $projectCategoryReference = null;
 
