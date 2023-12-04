@@ -340,7 +340,7 @@ class TaskController extends AbstractController
             $response = $this->redirect($referer);
         }
 
-        $id = $request->request->get('project_category_reference_id');
+        $id = $request->request->get('projectCategoryReferenceStatusId');
         if (!is_numeric($id)) {
             $this->addFlash('error', $this->translator->trans('invalid_identifier'));
             return $response;

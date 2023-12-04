@@ -5,16 +5,20 @@
     <title>{{ 'email.activation.title'|trans }}</title>
 </head>
 <body>
-<h1>{{ 'task_update.title'|trans }}</h1>
+<h1>{{ 'task_update.title'|trans({ '%taskNumber%': task.id }) }}</h1>
 
 <p>{{ 'task_update.intro'|trans({ '%user%': user.username }) }}</p>
-<p>{{ 'task_update.content'|trans }}</p>
+<p>{{ 'task_update.content'|trans({ '%project%': project.name }) }}</p>
 
 <ul>
-    <li>{{ 'task_update.details.0'|trans({ '%task%': task.title }) }}</li>
+    <li> <strong>{{ 'task_update.details.0'|trans({ '%task%': task.title }) }}</strong></li>
+    <li>{{ 'task_update.details.1'|trans({ '%createdBy%': task.createdBy.username }) }}</li>
+    <li>{{ 'task_update.details.4'|trans({ '%priority%': task.priority|trans }) }}</li>
+    <li><hr></li>
     {% if task.updatedBy %}
-    <li>{{ 'task_update.details.1'|trans({ '%updatedBy%': task.updatedBy.username }) }}</li>
-    <li>{{ 'task_update.details.2'|trans({ '%updatedAt%': task.updatedAt|date('d/m/Y H:i') }) }}</li>
+        <li><b>{{ 'task_update.details.3'|trans({ '%status%': task.lastStatus.label}) }}</b></li>
+        <li>{{ 'task_update.details.2'|trans({ '%updatedBy%': task.updatedBy.username}) }}</li>
+        <li>{{ 'task_update.details.5'|trans({ '%assignedTo%': task.assignedTo.username }) }}</li>
     {% endif %}
 </ul>
 

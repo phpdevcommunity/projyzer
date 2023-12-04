@@ -112,11 +112,11 @@
                                                         <form class="dropdown-item-text" method="post"
                                                               action="{{ url('tasks_change_status', {task: task.id, redirect_url : app.request.uri}) }}">
                                                             <select id="task_status"
-                                                                    name="project_category_reference_id"
+                                                                    name="projectCategoryReferenceStatusId"
                                                                     class="form-select form-select-sm">
                                                                 {% for status in statuses %}
-                                                                    <option value="{{ status.id }}"{% if status.label == task.lastStatus.label %} selected="selected"{% endif %}>
-                                                                        {{ status.label }}
+                                                                    <option value="{{ status.id }}"{% if status.taskStatusReference.label == task.lastStatus.label %} selected="selected"{% endif %}>
+                                                                        {{ status.taskStatusReference.label }}
                                                                     </option>
                                                                 {% endfor %}
                                                             </select>

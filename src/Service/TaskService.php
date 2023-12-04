@@ -42,10 +42,7 @@ final class TaskService
             }
         }
 
-        /**
-         * @var User $currentUser
-         */
-        $currentUser = $this->security->getUser();
+        $currentUser =  $task->getUpdatedBy();
         $project = $task->getProject();
         $this->mailerService->send(
             (new Email())
@@ -53,12 +50,13 @@ final class TaskService
                 ->subject(
                     $this->translator->trans(
                         'task_update_subject',
-                        ['%%project%'=> $project->getName(), '%task%' => sprintf('#%s', $task->getId())]
+                        ['%project%'=> $project->getName(), '%task%' => sprintf('#%s', $task->getId())]
                     )
                 )
                 ->html($this->twig->render('email/task_notify.html.twig', [
                     'urlTask' => $this->urlGenerator->generate('tasks_get', ['task' => $task->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
                     'task' => $task,
+                    'project' => $task->getProject(),
                     'user' => $currentUser,
                 ]))
         );

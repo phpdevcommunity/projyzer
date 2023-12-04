@@ -155,13 +155,16 @@ email:
     signature: 'Best regards, %organizationName%'
 task_update_subject: "[%project%] Request : %task%"
 task_update:
-  title: "Request %taskNumber%"
+  title: "Request #%taskNumber%"
   intro: "Hello %user%,"
   content: "A task in project [%project%] has been updated. Here are the details:"
   details:
     0: "Task Title: %task%"
-    1: "Updated by: %updatedBy%"
-    2: "Date: %updatedAt%"
+    1: "Author: %createdBy%"
+    2: "Updated by: %updatedBy%"
+    3: "Status: %status%"
+    4: "Priority: %priority%"
+    5: "Assigned to: %assignedTo%"
   cta: "You can view the task by clicking on the following link:"
   signature: "Best regards, %organizationName%"
 username_connexion: "Connection Username"

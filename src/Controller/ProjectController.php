@@ -147,9 +147,9 @@ class ProjectController extends AbstractController
         }
 
         /**
-         * @var array<TaskStatusReference> $statuses
+         * @var array<ProjectCategoryReferenceStatus> $statuses
          */
-        $statuses = $project->getProjectCategoryReference()?->getStatuses() ?: [];
+        $statuses = $project->getProjectCategoryReference()?->getProjectCategoryReferenceStatuses() ?: [];
 
         return $this->render('project/project.html.twig', [
             'project' => $project,
